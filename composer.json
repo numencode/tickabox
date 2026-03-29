@@ -11,7 +11,7 @@
         "laravel/tinker": "^2.10.1",
         "livewire/livewire": "^4.1",
         "livewire/volt": "^1.10",
-        "nativephp/mobile": "^3.0",
+        "nativephp/mobile": "~3.1.0",
         "nativephp/mobile-device": "^1.0",
         "nativephp/mobile-dialog": "^1.0",
         "nativephp/mobile-network": "^1.0"

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "75017cb00b2daf8c3c0646fcc6b6df6d",
+    "content-hash": "a3dc2c2ccd0aebe6ff535f86d7c2ccca",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1279,16 +1279,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v12.55.1",
+            "version": "v12.56.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "6d9185a248d101b07eecaf8fd60b18129545fd33"
+                "reference": "dac16d424b59debb2273910dde88eb7050a2a709"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/6d9185a248d101b07eecaf8fd60b18129545fd33",
-                "reference": "6d9185a248d101b07eecaf8fd60b18129545fd33",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/dac16d424b59debb2273910dde88eb7050a2a709",
+                "reference": "dac16d424b59debb2273910dde88eb7050a2a709",
                 "shasum": ""
             },
             "require": {
@@ -1497,20 +1497,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-03-18T14:28:59+00:00"
+            "time": "2026-03-26T14:51:54+00:00"
         },
         {
             "name": "laravel/prompts",
-            "version": "v0.3.15",
+            "version": "v0.3.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/prompts.git",
-                "reference": "4bb8107ec97651fd3f17f897d6489dbc4d8fb999"
+                "reference": "11e7d5f93803a2190b00e145142cb00a33d17ad2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/prompts/zipball/4bb8107ec97651fd3f17f897d6489dbc4d8fb999",
-                "reference": "4bb8107ec97651fd3f17f897d6489dbc4d8fb999",
+                "url": "https://api.github.com/repos/laravel/prompts/zipball/11e7d5f93803a2190b00e145142cb00a33d17ad2",
+                "reference": "11e7d5f93803a2190b00e145142cb00a33d17ad2",
                 "shasum": ""
             },
             "require": {
@@ -1554,9 +1554,9 @@
             "description": "Add beautiful and user-friendly forms to your command-line applications.",
             "support": {
                 "issues": "https://github.com/laravel/prompts/issues",
-                "source": "https://github.com/laravel/prompts/tree/v0.3.15"
+                "source": "https://github.com/laravel/prompts/tree/v0.3.16"
             },
-            "time": "2026-03-17T13:45:17+00:00"
+            "time": "2026-03-23T14:35:33+00:00"
         },
         {
             "name": "laravel/serializable-closure",
@@ -1876,16 +1876,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.32.0",
+            "version": "3.33.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "254b1595b16b22dbddaaef9ed6ca9fdac4956725"
+                "reference": "570b8871e0ce693764434b29154c54b434905350"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/254b1595b16b22dbddaaef9ed6ca9fdac4956725",
-                "reference": "254b1595b16b22dbddaaef9ed6ca9fdac4956725",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/570b8871e0ce693764434b29154c54b434905350",
+                "reference": "570b8871e0ce693764434b29154c54b434905350",
                 "shasum": ""
             },
             "require": {
@@ -1953,9 +1953,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.32.0"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.33.0"
             },
-            "time": "2026-02-25T17:01:41+00:00"
+            "time": "2026-03-25T07:59:30+00:00"
         },
         {
             "name": "league/flysystem-local",
@@ -2246,16 +2246,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v4.2.1",
+            "version": "v4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "93e972fa42c1b34fff1550093ab94f778d81ea5a"
+                "reference": "71c28888f99b4bfdaad89a07a104adbc3f98c04b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/93e972fa42c1b34fff1550093ab94f778d81ea5a",
-                "reference": "93e972fa42c1b34fff1550093ab94f778d81ea5a",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/71c28888f99b4bfdaad89a07a104adbc3f98c04b",
+                "reference": "71c28888f99b4bfdaad89a07a104adbc3f98c04b",
                 "shasum": ""
             },
             "require": {
@@ -2310,7 +2310,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v4.2.1"
+                "source": "https://github.com/livewire/livewire/tree/v4.2.2"
             },
             "funding": [
                 {
@@ -2318,20 +2318,20 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-02-28T00:01:19+00:00"
+            "time": "2026-03-25T23:19:23+00:00"
         },
         {
             "name": "livewire/volt",
-            "version": "v1.10.4",
+            "version": "v1.10.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/volt.git",
-                "reference": "8b58d1bfbe9a7b377ddeb26848746113afb58e5b"
+                "reference": "32a111951779f9dcf2a08a5704acb940ac9a146c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/volt/zipball/8b58d1bfbe9a7b377ddeb26848746113afb58e5b",
-                "reference": "8b58d1bfbe9a7b377ddeb26848746113afb58e5b",
+                "url": "https://api.github.com/repos/livewire/volt/zipball/32a111951779f9dcf2a08a5704acb940ac9a146c",
+                "reference": "32a111951779f9dcf2a08a5704acb940ac9a146c",
                 "shasum": ""
             },
             "require": {
@@ -2389,7 +2389,7 @@
                 "issues": "https://github.com/livewire/volt/issues",
                 "source": "https://github.com/livewire/volt"
             },
-            "time": "2026-03-05T19:21:22+00:00"
+            "time": "2026-03-18T14:16:30+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2496,16 +2496,16 @@
         },
         {
             "name": "nativephp/mobile",
-            "version": "3.0.4",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NativePHP/mobile-air.git",
-                "reference": "f626c1aa604a8b1096e2c630dfdb7eb7e273a6bc"
+                "reference": "8633539a5318066d5d2fd83e829e26d4ebff9b7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NativePHP/mobile-air/zipball/f626c1aa604a8b1096e2c630dfdb7eb7e273a6bc",
-                "reference": "f626c1aa604a8b1096e2c630dfdb7eb7e273a6bc",
+                "url": "https://api.github.com/repos/NativePHP/mobile-air/zipball/8633539a5318066d5d2fd83e829e26d4ebff9b7d",
+                "reference": "8633539a5318066d5d2fd83e829e26d4ebff9b7d",
                 "shasum": ""
             },
             "require": {
@@ -2513,8 +2513,8 @@
                 "ext-dom": "*",
                 "ext-simplexml": "*",
                 "guzzlehttp/guzzle": "^7.9",
-                "illuminate/contracts": "^10.0|^11.0|^12.0",
-                "illuminate/support": "^10.0|^11.0|^12.0",
+                "illuminate/contracts": "^10.0|^11.0|^12.0|^13.0",
+                "illuminate/support": "^10.0|^11.0|^12.0|^13.0",
                 "laravel/prompts": "^0.1.1|^0.2|^0.3",
                 "php": "^8.3",
                 "react/datagram": "^1.10",
@@ -2526,7 +2526,7 @@
                 "laravel/pint": "^1.0",
                 "nunomaduro/collision": "^7.9",
                 "orchestra/testbench": "^8.18",
-                "pestphp/pest": "^2.7",
+                "pestphp/pest": "^2.7|^3.0|^4.0",
                 "pestphp/pest-plugin-arch": "^2.0",
                 "pestphp/pest-plugin-laravel": "^2.0",
                 "phpstan/extension-installer": "^1.1",
@@ -2573,26 +2573,26 @@
             ],
             "support": {
                 "issues": "https://github.com/NativePHP/mobile-air/issues",
-                "source": "https://github.com/NativePHP/mobile-air/tree/3.0.4"
+                "source": "https://github.com/NativePHP/mobile-air/tree/3.1.1"
             },
-            "time": "2026-02-17T14:41:23+00:00"
+            "time": "2026-03-23T15:29:06+00:00"
         },
         {
             "name": "nativephp/mobile-device",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NativePHP/mobile-device.git",
-                "reference": "91f569fdc903961f06776e865b856369660de4c6"
+                "reference": "abd880cea32a969770059653ebb6e2c530cfd08d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NativePHP/mobile-device/zipball/91f569fdc903961f06776e865b856369660de4c6",
-                "reference": "91f569fdc903961f06776e865b856369660de4c6",
+                "url": "https://api.github.com/repos/NativePHP/mobile-device/zipball/abd880cea32a969770059653ebb6e2c530cfd08d",
+                "reference": "abd880cea32a969770059653ebb6e2c530cfd08d",
                 "shasum": ""
             },
             "require": {
-                "nativephp/mobile": "*",
+                "nativephp/mobile": "^3.0",
                 "php": "^8.2"
             },
             "type": "nativephp-plugin",
@@ -2618,26 +2618,26 @@
             "description": "Device hardware operations for NativePHP Mobile",
             "support": {
                 "issues": "https://github.com/NativePHP/mobile-device/issues",
-                "source": "https://github.com/NativePHP/mobile-device/tree/1.0.1"
+                "source": "https://github.com/NativePHP/mobile-device/tree/1.0.2"
             },
-            "time": "2026-03-12T22:12:09+00:00"
+            "time": "2026-03-20T22:08:33+00:00"
         },
         {
             "name": "nativephp/mobile-dialog",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NativePHP/mobile-dialog.git",
-                "reference": "ce1958fff0c32a500688b9bc4ca9c426b5bd2c4f"
+                "reference": "fd0ca0d79a2f2396929f6146fef7a55c761b3dd0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NativePHP/mobile-dialog/zipball/ce1958fff0c32a500688b9bc4ca9c426b5bd2c4f",
-                "reference": "ce1958fff0c32a500688b9bc4ca9c426b5bd2c4f",
+                "url": "https://api.github.com/repos/NativePHP/mobile-dialog/zipball/fd0ca0d79a2f2396929f6146fef7a55c761b3dd0",
+                "reference": "fd0ca0d79a2f2396929f6146fef7a55c761b3dd0",
                 "shasum": ""
             },
             "require": {
-                "nativephp/mobile": "*",
+                "nativephp/mobile": "^3.0",
                 "php": "^8.2"
             },
             "type": "nativephp-plugin",
@@ -2669,26 +2669,26 @@
             "description": "Native alert dialogs and toast notifications for NativePHP Mobile",
             "support": {
                 "issues": "https://github.com/NativePHP/mobile-dialog/issues",
-                "source": "https://github.com/NativePHP/mobile-dialog/tree/1.0.0"
+                "source": "https://github.com/NativePHP/mobile-dialog/tree/1.0.1"
             },
-            "time": "2026-01-19T23:53:05+00:00"
+            "time": "2026-03-20T22:08:33+00:00"
         },
         {
             "name": "nativephp/mobile-network",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NativePHP/mobile-network.git",
-                "reference": "3c4360d7dd80f378c746b83cbd80573fa64e59a6"
+                "reference": "3a544d6e177c52cd5e2a1bf2becb18ff2c9e8c5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NativePHP/mobile-network/zipball/3c4360d7dd80f378c746b83cbd80573fa64e59a6",
-                "reference": "3c4360d7dd80f378c746b83cbd80573fa64e59a6",
+                "url": "https://api.github.com/repos/NativePHP/mobile-network/zipball/3a544d6e177c52cd5e2a1bf2becb18ff2c9e8c5c",
+                "reference": "3a544d6e177c52cd5e2a1bf2becb18ff2c9e8c5c",
                 "shasum": ""
             },
             "require": {
-                "nativephp/mobile": "*",
+                "nativephp/mobile": "^3.0",
                 "php": "^8.2"
             },
             "type": "nativephp-plugin",
@@ -2720,9 +2720,9 @@
             "description": "Network connectivity status plugin for NativePHP Mobile",
             "support": {
                 "issues": "https://github.com/NativePHP/mobile-network/issues",
-                "source": "https://github.com/NativePHP/mobile-network/tree/1.0.0"
+                "source": "https://github.com/NativePHP/mobile-network/tree/1.0.1"
             },
-            "time": "2026-01-19T23:53:07+00:00"
+            "time": "2026-03-20T22:08:33+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -3621,16 +3621,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.12.21",
+            "version": "v0.12.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "4821fab5b7cd8c49a673a9fd5754dc9162bb9e97"
+                "reference": "3be75d5b9244936dd4ac62ade2bfb004d13acf0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/4821fab5b7cd8c49a673a9fd5754dc9162bb9e97",
-                "reference": "4821fab5b7cd8c49a673a9fd5754dc9162bb9e97",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/3be75d5b9244936dd4ac62ade2bfb004d13acf0f",
+                "reference": "3be75d5b9244936dd4ac62ade2bfb004d13acf0f",
                 "shasum": ""
             },
             "require": {
@@ -3694,9 +3694,9 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
-                "source": "https://github.com/bobthecow/psysh/tree/v0.12.21"
+                "source": "https://github.com/bobthecow/psysh/tree/v0.12.22"
             },
-            "time": "2026-03-06T21:21:28+00:00"
+            "time": "2026-03-22T23:03:24+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -7436,16 +7436,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.54.0",
+            "version": "v1.55.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "bcc5e06f1a79d806d880a4b027964d2aa5872b07"
+                "reference": "67dc1b72da4e066a2fb54c1c7582fd2f140ea191"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/bcc5e06f1a79d806d880a4b027964d2aa5872b07",
-                "reference": "bcc5e06f1a79d806d880a4b027964d2aa5872b07",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/67dc1b72da4e066a2fb54c1c7582fd2f140ea191",
+                "reference": "67dc1b72da4e066a2fb54c1c7582fd2f140ea191",
                 "shasum": ""
             },
             "require": {
@@ -7495,7 +7495,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2026-03-11T14:10:52+00:00"
+            "time": "2026-03-23T15:56:34+00:00"
         },
         {
             "name": "mockery/mockery",
