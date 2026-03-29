@@ -3,6 +3,7 @@
 ---
 
 ## Reset application
+> npm run build 
 > adb uninstall com.numencode.tickabox  
 > php artisan native:install android --force  
 > php artisan native:run android --watch

@@ -391,9 +391,7 @@ new class extends Component {
         @if (! $this->user())
             <section class="tk-auth-card">
                 <div class="tk-brand">
-                    <div class="tk-brand__mark">
-                        <span></span>
-                    </div>
+                    <img src="/icon.png" alt="Tickabox Logo" class="tk-brand__mark">
 
                     <div>
                         <h1 class="tk-brand__title">Tickabox</h1>
@@ -464,9 +462,7 @@ new class extends Component {
             <section class="tk-panel">
                 <header class="tk-header">
                     <div class="tk-brand tk-brand--compact">
-                        <div class="tk-brand__mark">
-                            <span></span>
-                        </div>
+                        <img src="/icon.png" alt="Tickabox Logo" class="tk-brand__mark">
 
                         <div>
                             <h1 class="tk-brand__title">Tickabox</h1>
