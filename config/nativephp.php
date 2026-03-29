@@ -335,10 +335,10 @@ return [
 
     'permissions' => [
         'biometric' => false,
-        'camera' => true,
+        'camera' => false,
         'location' => false,
-        'microphone' => true,
-        'microphone_background' => true,
+        'microphone' => false,
+        'microphone_background' => false,
         'network_state' => true,
         'nfc' => false,
         'push_notifications' => false,

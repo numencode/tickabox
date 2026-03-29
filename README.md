@@ -3,12 +3,15 @@
 ---
 
 ## Reset application
-> npm run build 
 > adb uninstall com.numencode.tickabox  
 > php artisan native:install android --force  
 > php artisan native:run android --watch
 
+# Run on Jump
 > php artisan native:jump android
+
+# Build APK release
+> php artisan native:package android --build-type=release
 
 ## ADB SHELL
 
@@ -24,7 +27,7 @@ Tinker in emulator shell:
 Retrieve the database from the emulator:
 > adb exec-out run-as com.numencode.tickabox cat /data/user/0/com.numencode.tickabox/app_storage/persisted_data/database/database.sqlite > database.sqlite
 
-# Compile front-end assets
+## Compile front-end assets
 > npm run build
 
 ---
@@ -54,6 +57,3 @@ For inquiries, contact: info@numencode.com
 ## License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-
-jane@numencode.com
