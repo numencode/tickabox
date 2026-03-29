@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Todo extends Model
 {
@@ -21,7 +21,7 @@ class Todo extends Model
     ];
 
     protected $casts = [
-        'is_completed'     => 'boolean',
+        'is_completed' => 'boolean',
         'last_modified_at' => 'datetime',
     ];
 

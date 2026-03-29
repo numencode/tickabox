@@ -19,7 +19,7 @@ class SyncOperation extends Model
     ];
 
     protected $casts = [
-        'payload'      => 'array',
+        'payload' => 'array',
         'available_at' => 'datetime',
     ];
 
