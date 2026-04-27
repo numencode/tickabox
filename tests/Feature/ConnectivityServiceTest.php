@@ -1,6 +1,7 @@
 <?php
 
 use App\Services\ConnectivityService;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 
 // Device and Network facades are unavailable in the test environment, so
@@ -19,7 +20,7 @@ it('reports offline when the API /up endpoint returns a non-2xx status', functio
 });
 
 it('reports offline when the HTTP call throws a connection error', function () {
-    Http::fake(['*/up' => fn () => throw new \Illuminate\Http\Client\ConnectionException('refused')]);
+    Http::fake(['*/up' => fn () => throw new ConnectionException('refused')]);
 
     expect(app(ConnectivityService::class)->isOnline())->toBeFalse();
 });

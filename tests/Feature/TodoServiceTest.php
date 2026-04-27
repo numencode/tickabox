@@ -7,6 +7,7 @@ use App\Services\ConnectivityService;
 use App\Services\TodoService;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 // Prevent the sync job from making real HTTP calls during these tests.
 beforeEach(function () {
@@ -66,14 +67,14 @@ it('throws for an empty title', function () {
     $user = makeUser();
 
     expect(fn () => offlineService()->create($user, '   '))
-        ->toThrow(\InvalidArgumentException::class);
+        ->toThrow(InvalidArgumentException::class);
 });
 
 it('throws for a title longer than 255 characters', function () {
     $user = makeUser();
 
     expect(fn () => offlineService()->create($user, str_repeat('a', 256)))
-        ->toThrow(\InvalidArgumentException::class);
+        ->toThrow(InvalidArgumentException::class);
 });
 
 /*
@@ -110,7 +111,7 @@ it('aborts with 403 when toggling another users todo', function () {
     $userB = makeUser();
     $todo = Todo::factory()->forUser($userB)->create();
 
-    expect(fn () => offlineService()->toggle($userA, $todo))->toThrow(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+    expect(fn () => offlineService()->toggle($userA, $todo))->toThrow(HttpException::class);
 });
 
 /*
@@ -161,7 +162,7 @@ it('aborts with 403 when deleting another users todo', function () {
     $userB = makeUser();
     $todo = Todo::factory()->forUser($userB)->create();
 
-    expect(fn () => offlineService()->delete($userA, $todo))->toThrow(\Symfony\Component\HttpKernel\Exception\HttpException::class);
+    expect(fn () => offlineService()->delete($userA, $todo))->toThrow(HttpException::class);
 });
 
 /*

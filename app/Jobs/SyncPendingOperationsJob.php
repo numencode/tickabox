@@ -57,7 +57,7 @@ class SyncPendingOperationsJob
         $this->pullRemoteChanges($user, $token, $baseUrl);
 
         if ($this->authExpired) {
-            throw new AuthExpiredException();
+            throw new AuthExpiredException;
         }
     }
 
@@ -229,6 +229,7 @@ class SyncPendingOperationsJob
 
                     if ($remoteModifiedAt && $todo->last_modified_at && $remoteModifiedAt->lt($todo->last_modified_at)) {
                         $todo->update(['sync_status' => 'synced']);
+
                         continue;
                     }
 
@@ -343,6 +344,7 @@ class SyncPendingOperationsJob
                                 'user_id' => $user->id,
                                 'uuid' => $uuid,
                             ]);
+
                             continue;
                         }
 

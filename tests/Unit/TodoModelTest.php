@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Todo;
-use App\Models\User;
 use Illuminate\Support\Str;
 
 it('auto-generates a UUID when creating a todo', function () {

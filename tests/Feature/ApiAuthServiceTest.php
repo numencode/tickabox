@@ -53,14 +53,14 @@ it('throws when the API response is missing the token', function () {
     Http::fake(['*/api/login' => Http::response(['user' => ['id' => 1, 'name' => 'X', 'email' => 'x@x.com']], 200)]);
 
     expect(fn () => app(ApiAuthService::class)->login('x@x.com', 'pass'))
-        ->toThrow(\UnexpectedValueException::class);
+        ->toThrow(UnexpectedValueException::class);
 });
 
 it('throws when the API response has incomplete user data', function () {
     Http::fake(['*/api/login' => Http::response(['token' => 'abc', 'user' => ['email' => 'x@x.com']], 200)]);
 
     expect(fn () => app(ApiAuthService::class)->login('x@x.com', 'pass'))
-        ->toThrow(\UnexpectedValueException::class);
+        ->toThrow(UnexpectedValueException::class);
 });
 
 /*

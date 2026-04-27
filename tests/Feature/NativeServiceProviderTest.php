@@ -18,7 +18,7 @@ it('throws a RuntimeException when the API URL is HTTP in a non-local environmen
 
     $provider = new NativeServiceProvider($this->app);
 
-    expect(fn () => $provider->boot())->toThrow(\RuntimeException::class, 'TICKABOX_API_URL must use HTTPS');
+    expect(fn () => $provider->boot())->toThrow(RuntimeException::class, 'TICKABOX_API_URL must use HTTPS');
 
     $this->app['env'] = 'testing'; // restore
 });
