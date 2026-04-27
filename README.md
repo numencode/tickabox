@@ -1,6 +1,6 @@
 # Tickabox
 
-An offline-first todo mobile app for Android and iOS, built with **NativePHP**, **Laravel 12**, and **Livewire Volt**.
+An offline-first todo mobile app for Android and iOS, built with **NativePHP**, **Laravel 13**, and **Livewire Volt**.
 
 **Companion API repository:** https://github.com/numencode/tickabox-api
 
@@ -21,7 +21,7 @@ Tickabox is a native mobile application that lets you manage todos on your devic
 
 | Requirement | Version |
 |---|---|
-| PHP | 8.2 or newer |
+| PHP | 8.3 or newer |
 | Composer | 2.3 or newer |
 | Node.js | 18 or newer |
 | Java (JDK) | 17 or newer |
@@ -36,7 +36,7 @@ Tickabox is a native mobile application that lets you manage todos on your devic
 
 | Layer | Technology |
 |---|---|
-| Framework | Laravel 12 |
+| Framework | Laravel 13 |
 | UI | Livewire 4 + Livewire Volt (single Volt component) |
 | Native runtime | NativePHP Mobile ~3.1 |
 | Local database | SQLite |
