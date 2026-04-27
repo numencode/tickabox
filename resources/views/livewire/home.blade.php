@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\AuthExpiredException;
 use App\Jobs\SyncPendingOperationsJob;
 use App\Models\SyncMeta;
 use App\Models\SyncOperation;
@@ -8,7 +9,11 @@ use App\Models\User;
 use App\Services\ApiAuthService;
 use App\Services\ConnectivityService;
 use App\Services\TodoService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Carbon;
+use Livewire\Attributes\Computed;
 use Livewire\Volt\Component;
 
 new class extends Component {
@@ -39,11 +44,17 @@ new class extends Component {
 
         $user = User::query()
             ->whereNotNull('remote_id')
+            ->orderByDesc('id')
             ->first();
 
         $this->userId = $user?->id;
+    }
 
-        if ($user && $this->isOnline()) {
+    public function initSync(ConnectivityService $connectivityService): void
+    {
+        $this->refreshNetwork($connectivityService);
+
+        if ($this->user && $this->isOnline()) {
             $this->runSync();
         }
     }
@@ -53,16 +64,22 @@ new class extends Component {
         $this->network = $connectivityService->status();
     }
 
+    #[Computed]
     public function user(): ?User
     {
-        return $this->userId
-            ? User::query()->find($this->userId)
-            : null;
+        if (! $this->userId) {
+            return null;
+        }
+
+        return User::query()
+            ->whereNotNull('remote_id')
+            ->find($this->userId);
     }
 
+    #[Computed]
     public function todos()
     {
-        $user = $this->user();
+        $user = $this->user;
 
         if (! $user) {
             return collect();
@@ -75,37 +92,37 @@ new class extends Component {
             ->get();
     }
 
-    public function pendingSyncCount(): int
+    #[Computed]
+    public function syncCounts(): array
     {
-        $user = $this->user();
+        $user = $this->user;
 
         if (! $user) {
-            return 0;
+            return ['pending' => 0, 'failed' => 0];
         }
 
-        return SyncOperation::query()
+        $counts = SyncOperation::query()
             ->where('user_id', $user->id)
-            ->whereIn('status', ['pending', 'processing'])
-            ->count();
-    }
+            ->whereIn('status', ['pending', 'processing', 'failed'])
+            ->selectRaw('status, COUNT(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
 
-    public function failedSyncCount(): int
-    {
-        $user = $this->user();
-
-        if (! $user) {
-            return 0;
-        }
-
-        return SyncOperation::query()
-            ->where('user_id', $user->id)
-            ->where('status', 'failed')
-            ->count();
+        return [
+            'pending' => (int) ($counts['pending'] ?? 0) + (int) ($counts['processing'] ?? 0),
+            'failed' => (int) ($counts['failed'] ?? 0),
+        ];
     }
 
     public function lastSyncAt(): ?string
     {
-        $value = SyncMeta::getValue('last_pulled_at');
+        $user = $this->user;
+
+        if (! $user) {
+            return null;
+        }
+
+        $value = SyncMeta::getValue($user->id, 'last_pulled_at');
 
         if (! $value) {
             return null;
@@ -170,11 +187,11 @@ new class extends Component {
             return 'syncing';
         }
 
-        if ($this->failedSyncCount() > 0) {
+        if ($this->syncCounts['failed'] > 0) {
             return 'failed';
         }
 
-        if ($this->pendingSyncCount() > 0) {
+        if ($this->syncCounts['pending'] > 0) {
             return 'pending';
         }
 
@@ -203,12 +220,12 @@ new class extends Component {
             return 'Tasks are stored locally until you reconnect.';
         }
 
-        if ($this->failedSyncCount() > 0) {
-            return $this->failedSyncCount() . ' failed operation(s)';
+        if ($this->syncCounts['failed'] > 0) {
+            return $this->syncCounts['failed'] . ' failed operation(s)';
         }
 
-        if ($this->pendingSyncCount() > 0) {
-            return $this->pendingSyncCount() . ' pending operation(s)';
+        if ($this->syncCounts['pending'] > 0) {
+            return $this->syncCounts['pending'] . ' pending operation(s)';
         }
 
         if ($this->lastSyncAt()) {
@@ -243,7 +260,7 @@ new class extends Component {
                 $this->runSync();
             }
         } catch (\Throwable $e) {
-            $this->errorMessage = 'Registration failed. Please check your details and try again.';
+            $this->errorMessage = $this->authErrorMessage($e, 'Registration');
         }
     }
 
@@ -265,13 +282,13 @@ new class extends Component {
                 $this->runSync();
             }
         } catch (\Throwable $e) {
-            $this->errorMessage = 'Login failed. Please check your email and password.';
+            $this->errorMessage = $this->authErrorMessage($e, 'Login');
         }
     }
 
     public function logout(ApiAuthService $authService): void
     {
-        $user = $this->user();
+        $user = $this->user;
 
         if ($user) {
             $authService->logout($user);
@@ -284,9 +301,24 @@ new class extends Component {
         $this->password = '';
     }
 
+    public function logoutAllDevices(ApiAuthService $authService): void
+    {
+        $user = $this->user;
+
+        if ($user) {
+            $authService->logoutAllDevices($user);
+        }
+
+        $this->userId = null;
+        $this->title = '';
+        $this->errorMessage = null;
+        $this->syncMessage = null;
+        $this->password = '';
+    }
+
     public function addTodo(TodoService $todoService, ConnectivityService $connectivityService): void
     {
-        $user = $this->user();
+        $user = $this->user;
 
         if (! $user) {
             return;
@@ -296,7 +328,20 @@ new class extends Component {
             return;
         }
 
-        $todoService->create($user, $this->title);
+        if (mb_strlen(trim($this->title)) > 255) {
+            return;
+        }
+
+        try {
+            $todoService->create($user, $this->title);
+        } catch (AuthExpiredException) {
+            $this->userId = null;
+            return;
+        } catch (\Throwable) {
+            $this->syncMessage = 'Could not save the task. Please try again.';
+            return;
+        }
+
         $this->title = '';
         $this->refreshNetwork($connectivityService);
 
@@ -307,17 +352,30 @@ new class extends Component {
 
     public function toggleTodo(int $id, TodoService $todoService, ConnectivityService $connectivityService): void
     {
-        $user = $this->user();
+        $user = $this->user;
 
         if (! $user) {
             return;
         }
 
-        $todo = Todo::query()
-            ->where('user_id', $user->id)
-            ->findOrFail($id);
+        try {
+            $todo = Todo::query()
+                ->where('user_id', $user->id)
+                ->findOrFail($id);
+        } catch (ModelNotFoundException) {
+            return;
+        }
 
-        $todoService->toggle($todo);
+        try {
+            $todoService->toggle($user, $todo);
+        } catch (AuthExpiredException) {
+            $this->userId = null;
+            return;
+        } catch (\Throwable) {
+            $this->syncMessage = 'Could not update the task. Please try again.';
+            return;
+        }
+
         $this->refreshNetwork($connectivityService);
 
         $this->syncMessage = $this->isOnline()
@@ -327,17 +385,30 @@ new class extends Component {
 
     public function deleteTodo(int $id, TodoService $todoService, ConnectivityService $connectivityService): void
     {
-        $user = $this->user();
+        $user = $this->user;
 
         if (! $user) {
             return;
         }
 
-        $todo = Todo::query()
-            ->where('user_id', $user->id)
-            ->findOrFail($id);
+        try {
+            $todo = Todo::query()
+                ->where('user_id', $user->id)
+                ->findOrFail($id);
+        } catch (ModelNotFoundException) {
+            return;
+        }
 
-        $todoService->delete($todo);
+        try {
+            $todoService->delete($user, $todo);
+        } catch (AuthExpiredException) {
+            $this->userId = null;
+            return;
+        } catch (\Throwable) {
+            $this->syncMessage = 'Could not delete the task. Please try again.';
+            return;
+        }
+
         $this->refreshNetwork($connectivityService);
 
         $this->syncMessage = $this->isOnline()
@@ -364,13 +435,39 @@ new class extends Component {
             return;
         }
 
+        $user = $this->user;
+
+        if (! $user) {
+            return;
+        }
+
         $this->isSyncing = true;
 
         try {
-            SyncPendingOperationsJob::dispatchSync();
+            SyncPendingOperationsJob::dispatchSync($user->id);
+        } catch (AuthExpiredException) {
+            $this->userId = null;
         } finally {
             $this->isSyncing = false;
         }
+    }
+
+    protected function authErrorMessage(\Throwable $e, string $action): string
+    {
+        if ($e instanceof ConnectionException) {
+            return 'Cannot connect to the server. Check your internet connection.';
+        }
+
+        if ($e instanceof RequestException) {
+            return match (true) {
+                $e->response->status() === 401 => 'Wrong email or password.',
+                $e->response->status() === 422 => 'Please check the details you entered.',
+                $e->response->status() >= 500  => 'The server is having issues. Please try again later.',
+                default                         => "{$action} failed. Please try again.",
+            };
+        }
+
+        return "{$action} failed. Please try again.";
     }
 
     protected function resetAuthForm(): void
@@ -383,12 +480,12 @@ new class extends Component {
 };
 ?>
 
-<div class="tk-app-shell">
+<div class="tk-app-shell" wire:init="initSync">
     <div class="tk-bg-orb tk-bg-orb--one"></div>
     <div class="tk-bg-orb tk-bg-orb--two"></div>
 
     <main class="tk-app">
-        @if (! $this->user())
+        @if (! $this->user)
             <section class="tk-auth-card">
                 <div class="tk-brand">
                     <img src="/icon.png" alt="Tickabox Logo" class="tk-brand__mark">
@@ -439,7 +536,7 @@ new class extends Component {
                     <div class="tk-field">
                         <label class="tk-label">Password</label>
                         <input
-                                wire:model="password"
+                                wire:model.lazy="password"
                                 type="password"
                                 class="tk-input"
                                 placeholder="••••••••"
@@ -467,14 +564,20 @@ new class extends Component {
                         <div>
                             <h1 class="tk-brand__title">Tickabox</h1>
                             <p class="tk-brand__subtitle">
-                                {{ $this->user()->name }} · {{ $this->user()->email }}
+                                {{ $this->user->name }} · {{ $this->user->email }}
                             </p>
                         </div>
                     </div>
 
-                    <button wire:click="logout" class="tk-button tk-button--ghost" type="button">
-                        Logout
-                    </button>
+                    <div class="tk-header__actions">
+                        <button wire:click="logout" class="tk-button tk-button--ghost" type="button">
+                            Logout
+                        </button>
+
+                        <button wire:click="logoutAllDevices" class="tk-button tk-button--ghost tk-button--danger" type="button">
+                            Sign out all devices
+                        </button>
+                    </div>
                 </header>
 
                 <section class="tk-network-bar tk-network-bar--{{ $this->isOnline() ? 'online' : 'offline' }}">
@@ -531,11 +634,11 @@ new class extends Component {
                 <section class="tk-list-wrap">
                     <div class="tk-list-head">
                         <h2 class="tk-section-title">Your tasks</h2>
-                        <span class="tk-badge">{{ $this->todos()->count() }}</span>
+                        <span class="tk-badge">{{ $this->todos->count() }}</span>
                     </div>
 
                     <ul class="tk-list">
-                        @forelse ($this->todos() as $item)
+                        @forelse ($this->todos as $item)
                             <li wire:key="todo-{{ $item->id }}" class="tk-item {{ $item->is_completed ? 'is-complete' : '' }}">
                                 <label class="tk-item__main">
                                     <input

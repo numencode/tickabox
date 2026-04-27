@@ -22,18 +22,16 @@ return new class extends Migration
 
             $table->json('payload')->nullable();
 
-            $table->string('status')->default('pending'); // pending|processing|done|failed
+            $table->string('status')->default('pending'); // pending|processing|done|failed|cancelled
             $table->unsignedInteger('attempts')->default(0);
             $table->text('last_error')->nullable();
-
-            // optional dedupe / ordering helpers
             $table->timestamp('available_at')->nullable();
 
             $table->timestamps();
 
             $table->index(['status', 'created_at']);
             $table->index(['entity_type', 'entity_uuid']);
-            $table->index(['user_id', 'status']);
+            $table->index(['user_id', 'status', 'available_at']);
         });
     }
 

@@ -37,6 +37,9 @@ return [
 
     'tickabox_api' => [
         'base_url' => env('TICKABOX_API_URL', 'http://10.0.2.2:8000'),
+        'timeout' => (int) env('TICKABOX_API_TIMEOUT', 30),
+        'auth_timeout' => (int) env('TICKABOX_API_AUTH_TIMEOUT', 15),
+        'connect_timeout' => (int) env('TICKABOX_API_CONNECT_TIMEOUT', 5),
     ],
 
 ];

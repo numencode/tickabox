@@ -12,10 +12,12 @@ class ConnectivityService
     public function isVirtualDevice(): bool
     {
         try {
-            $result = json_decode(Device::getInfo(), true);
+            $result = json_decode(Device::getInfo(), true, 512, JSON_THROW_ON_ERROR);
 
             return (bool) ($result['isVirtual'] ?? false);
         } catch (\Throwable $e) {
+            Log::warning('ConnectivityService: could not determine device type.', ['error' => $e->getMessage()]);
+
             return false;
         }
     }
@@ -76,10 +78,12 @@ class ConnectivityService
                 return false;
             }
 
-            $response = Http::timeout(2)->head($url);
+            $response = Http::timeout(2)->get($url.'/up');
 
-            return $response->successful() || $response->status() >= 200;
+            return $response->successful();
         } catch (\Throwable $e) {
+            Log::debug('ConnectivityService: internet reachability check failed.', ['error' => $e->getMessage()]);
+
             return false;
         }
     }

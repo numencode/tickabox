@@ -16,6 +16,10 @@ class TodoService
     {
         $title = trim($title);
 
+        if ($title === '' || strlen($title) > 255) {
+            throw new \InvalidArgumentException('Title must be 1–255 characters.');
+        }
+
         $todo = DB::transaction(function () use ($user, $title) {
             $todo = Todo::create([
                 'user_id' => $user->id,
@@ -30,74 +34,90 @@ class TodoService
             return $todo;
         });
 
-        $this->syncIfOnline();
+        $this->syncIfOnline($user);
 
         return $todo;
     }
 
-    public function toggle(Todo $todo): Todo
+    public function toggle(User $user, Todo $todo): Todo
     {
-        $todo = DB::transaction(function () use ($todo) {
-            $todo->update([
-                'is_completed' => ! $todo->is_completed,
+        abort_if($todo->user_id !== $user->id, 403);
+
+        $todo = DB::transaction(function () use ($todo, $user) {
+            $fresh = Todo::where('user_id', $todo->user_id)
+                ->lockForUpdate()
+                ->findOrFail($todo->id);
+
+            $fresh->update([
+                'is_completed' => ! $fresh->is_completed,
                 'sync_status' => 'pending',
                 'last_modified_at' => now(),
             ]);
 
-            $this->queueSyncOperation($todo->user, $todo, 'updated');
+            $this->queueSyncOperation($user, $fresh, 'updated');
 
-            return $todo->fresh();
+            return $fresh->fresh();
         });
 
-        $this->syncIfOnline();
+        $this->syncIfOnline($user);
 
         return $todo;
     }
 
-    public function delete(Todo $todo): void
+    public function delete(User $user, Todo $todo): void
     {
+        abort_if($todo->user_id !== $user->id, 403);
+
         DB::transaction(function () use ($todo) {
+            $fresh = Todo::where('user_id', $todo->user_id)
+                ->lockForUpdate()
+                ->find($todo->id);
+
+            if (! $fresh || $fresh->trashed()) {
+                return;
+            }
+
+            SyncOperation::where('user_id', $fresh->user_id)
+                ->where('entity_uuid', $fresh->uuid)
+                ->whereIn('status', ['pending', 'failed'])
+                ->whereIn('operation', ['created', 'updated'])
+                ->update(['status' => 'cancelled']);
+
             $deletedAt = now();
 
-            $todo->update([
+            $fresh->update([
                 'sync_status' => 'pending',
                 'last_modified_at' => $deletedAt,
             ]);
 
             SyncOperation::create([
-                'user_id' => $todo->user_id,
+                'user_id' => $fresh->user_id,
                 'entity_type' => 'todo',
-                'entity_uuid' => $todo->uuid,
+                'entity_uuid' => $fresh->uuid,
                 'operation' => 'deleted',
                 'payload' => [
-                    'uuid' => $todo->uuid,
-                    'title' => $todo->title,
-                    'is_completed' => $todo->is_completed,
+                    'uuid' => $fresh->uuid,
+                    'title' => $fresh->title,
+                    'is_completed' => $fresh->is_completed,
                     'last_modified_at' => $deletedAt->toIso8601String(),
                     'deleted_at' => $deletedAt->toIso8601String(),
                 ],
                 'status' => 'pending',
-                'available_at' => now(),
             ]);
 
-            $todo->delete();
+            $fresh->delete();
         });
 
-        $this->syncIfOnline();
+        $this->syncIfOnline($user);
     }
 
-    public function syncNow(): void
-    {
-        $this->syncIfOnline();
-    }
-
-    protected function syncIfOnline(): void
+    protected function syncIfOnline(User $user): void
     {
         if (! $this->connectivityService->isOnline()) {
             return;
         }
 
-        SyncPendingOperationsJob::dispatchSync();
+        SyncPendingOperationsJob::dispatchSync($user->id);
     }
 
     protected function queueSyncOperation(User $user, Todo $todo, string $operation): SyncOperation
@@ -115,7 +135,6 @@ class TodoService
                 'deleted_at' => $todo->deleted_at?->toIso8601String(),
             ],
             'status' => 'pending',
-            'available_at' => now(),
         ]);
     }
 }

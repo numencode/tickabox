@@ -111,6 +111,8 @@ return [
         '*_SECRET',
         'DB_PASSWORD',
         'DB_USERNAME',
+        'ANDROID_KEYSTORE_*',
+        'ANDROID_KEY_*',
     ],
 
     /*

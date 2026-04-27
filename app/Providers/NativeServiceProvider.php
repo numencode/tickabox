@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Native\Mobile\Providers\DeviceServiceProvider;
+use Native\Mobile\Providers\NetworkServiceProvider;
 
 class NativeServiceProvider extends ServiceProvider
 {
@@ -20,7 +21,15 @@ class NativeServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (! app()->environment('local', 'testing')) {
+            $apiUrl = config('services.tickabox_api.base_url', '');
+
+            if ($apiUrl && ! str_starts_with($apiUrl, 'https://')) {
+                throw new \RuntimeException(
+                    'TICKABOX_API_URL must use HTTPS in non-local environments. Got: '.$apiUrl
+                );
+            }
+        }
     }
 
     /**
@@ -36,6 +45,7 @@ class NativeServiceProvider extends ServiceProvider
     {
         return [
             DeviceServiceProvider::class,
+            NetworkServiceProvider::class,
         ];
     }
 }

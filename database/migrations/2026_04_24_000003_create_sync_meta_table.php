@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('sync_meta', function (Blueprint $table) {
             $table->id();
-
-            $table->string('key')->unique();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('key');
             $table->text('value')->nullable();
-
             $table->timestamps();
+            $table->unique(['user_id', 'key']);
         });
     }
 

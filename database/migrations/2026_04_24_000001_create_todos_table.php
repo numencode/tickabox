@@ -18,9 +18,6 @@ return new class extends Migration
 
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
 
-            // Optional: if you want remote numeric ID too
-            $table->unsignedBigInteger('remote_id')->nullable()->unique();
-
             $table->string('title');
             $table->boolean('is_completed')->default(false);
 

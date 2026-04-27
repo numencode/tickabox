@@ -13,7 +13,6 @@ class Todo extends Model
     protected $fillable = [
         'uuid',
         'user_id',
-        'remote_id',
         'title',
         'is_completed',
         'sync_status',
