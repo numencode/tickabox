@@ -635,3 +635,32 @@ button {
     color: var(--tk-text-soft);
     word-break: break-word;
 }
+
+.tk-field__input-wrap {
+    position: relative;
+}
+
+.tk-input--password {
+    padding-right: 46px;
+}
+
+.tk-eye-btn {
+    position: absolute;
+    right: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    padding: 4px;
+    color: var(--tk-text-faint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    border-radius: 8px;
+    transition: color 0.15s ease;
+}
+
+.tk-eye-btn:active {
+    color: var(--tk-primary);
+}
