@@ -238,7 +238,7 @@ new class extends Component {
     public function setMode(string $mode): void
     {
         $this->mode = in_array($mode, ['login', 'register'], true) ? $mode : 'login';
-        $this->errorMessage = null;
+        $this->resetAuthForm();
     }
 
     public function register(ApiAuthService $authService, ConnectivityService $connectivityService): void
@@ -461,13 +461,21 @@ new class extends Component {
         if ($e instanceof RequestException) {
             return match (true) {
                 $e->response->status() === 401 => 'Wrong email or password.',
-                $e->response->status() === 422 => 'Please check the details you entered.',
+                $e->response->status() === 422 => $this->firstValidationError($e),
                 $e->response->status() >= 500  => 'The server is having issues. Please try again later.',
                 default                         => "{$action} failed. Please try again.",
             };
         }
 
         return "{$action} failed. Please try again.";
+    }
+
+    protected function firstValidationError(RequestException $e): string
+    {
+        $errors = $e->response->json('errors', []);
+        $first = collect($errors)->flatten()->first();
+
+        return $first ? (string) $first : 'Please check the details you entered.';
     }
 
     protected function resetAuthForm(): void
@@ -536,7 +544,7 @@ new class extends Component {
                     <div class="tk-field">
                         <label class="tk-label">Password</label>
                         <input
-                                wire:model.lazy="password"
+                                wire:model="password"
                                 type="password"
                                 class="tk-input"
                                 placeholder="••••••••"

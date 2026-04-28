@@ -247,7 +247,7 @@ return [
     |
     */
 
-    'release_token' => 'a',
+    'release_token' => env('NATIVEPHP_APP_VERSION_CODE', 1),
 
     /*
     |---------------------------------------------------------------------------
